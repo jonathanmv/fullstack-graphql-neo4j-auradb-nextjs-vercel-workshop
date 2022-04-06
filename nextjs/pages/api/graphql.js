@@ -61,6 +61,13 @@ const driver = neo4j.driver(
   neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 );
 
+console.log('verifying neo4j connection...');
+driver.verifyConnectivity().then(info => {
+  console.log('connected to neo4j', info);
+}).catch(err => {
+  console.error('Could not connect to neo4j database:', err);
+})
+
 export default async function handler(req, res) {
   if (!apolloServer) {
     // cold start, need to create ApolloServer
